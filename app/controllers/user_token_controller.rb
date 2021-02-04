@@ -5,12 +5,14 @@ class UserTokenController < Knock::AuthTokenController
   before_action :authenticate, only: :sign_in
   def sign_in
     render json: token_json_hash(entity)
-    # render json: auth_params
   end
 
   def sign_up
     user = User.new(user_params)
-    if user.save
+    user.errors.add(:role, "can't create admin")
+    if user.role == 'admin'
+      render json: { errors: user.errors }, status: :unprocessable_entity
+    elsif user.save
       render json: token_json_hash(user)
     else
       render json: { errors: user.errors }, status: :unprocessable_entity
@@ -28,12 +30,7 @@ class UserTokenController < Knock::AuthTokenController
 
   def user_params
     params.require(:user).permit(
-      :first_name, :last_name, :age, :email, :password,
-      :role, :description
+      :first_name, :last_name, :phone, :email, :password, :role
     )
-  end
-
-  def auth_params
-    params.require(:auth).permit(:email, :password)
   end
 end
