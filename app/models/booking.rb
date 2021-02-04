@@ -1,17 +1,27 @@
 # frozen_string_literal: true
 
 class Booking < ApplicationRecord
-  enum status: %i[waiting for confirm confirmed declined canceled]
+  paginates_per 10
+  enum status: %i[waiting_for_confirm confirmed declined canceled]
 
   belongs_to :tenant, class_name: 'User'
   belongs_to :property
-  has_one :payment
-  has_one :chat
+  has_one :payment, dependent: :destroy
+  has_one :chat, dependent: :destroy
 
-  validates_presence_of :start_rent_at, :end_rent_at
   validate :end_date_is_after_start_date
+  validate :true_role
+
+  def property_price
+    property.price * (end_rent_at - start_rent_at).to_i
+  end
 
   private
+
+  def true_role
+    tenant.role == 'tenant' ||
+      errors.add(:role, 'must be tenant')
+  end
 
   def end_date_is_after_start_date
     end_rent_at < start_rent_at &&
