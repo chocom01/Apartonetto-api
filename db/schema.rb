@@ -10,29 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_27_125512) do
+ActiveRecord::Schema.define(version: 2021_02_04_162614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "bookings", force: :cascade do |t|
-    t.bigint "payment_id"
     t.bigint "tenant_id"
     t.bigint "property_id"
     t.integer "status", default: 0
-    t.datetime "start_rent_at"
-    t.datetime "end_rent_at"
+    t.date "start_rent_at"
+    t.date "end_rent_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["payment_id"], name: "index_bookings_on_payment_id"
     t.index ["property_id"], name: "index_bookings_on_property_id"
     t.index ["tenant_id"], name: "index_bookings_on_tenant_id"
   end
 
   create_table "chats", force: :cascade do |t|
     t.bigint "booking_id"
-    t.integer "tenant_unread_messages_count"
-    t.integer "provider_unread_messages_count"
+    t.integer "tenant_unread_messages_count", default: 0
+    t.integer "provider_unread_messages_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["booking_id"], name: "index_chats_on_booking_id"
@@ -49,8 +47,8 @@ ActiveRecord::Schema.define(version: 2021_01_27_125512) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.bigint "tenant_id"
-    t.bigint "provider_id"
+    t.bigint "payer_id"
+    t.bigint "recipient_id"
     t.bigint "booking_id"
     t.string "service"
     t.string "info"
@@ -59,8 +57,8 @@ ActiveRecord::Schema.define(version: 2021_01_27_125512) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["booking_id"], name: "index_payments_on_booking_id"
-    t.index ["provider_id"], name: "index_payments_on_provider_id"
-    t.index ["tenant_id"], name: "index_payments_on_tenant_id"
+    t.index ["payer_id"], name: "index_payments_on_payer_id"
+    t.index ["recipient_id"], name: "index_payments_on_recipient_id"
   end
 
   create_table "properties", force: :cascade do |t|
