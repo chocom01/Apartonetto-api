@@ -8,37 +8,52 @@
 
 users = User.create(
   [
+    { email: 'admin@gmail.com', password: 'admin', role: 2 },
     { first_name: 'Kolya', last_name: 'Vasyliv', phone: '380631775050',
-      email: 'qweasd1@gmail.com', password: 'qweasd' },
+      email: 'qweasd1@gmail.com', password: 'provider', role: 1 },
     { first_name: 'Igor', last_name: 'Kuzmin', phone: '380631775051',
-      email: 'qweasd2@gmail.com', password: 'rtyfgh' },
+      email: 'qweasd2@gmail.com', password: 'tenant', role: 0 },
     { first_name: 'Nazar', last_name: 'Ivleev', phone: '380631775052',
-      email: 'qweasd3@gmail.com', password: 'zxcvbn' },
+      email: 'qweasd3@gmail.com', password: 'tenant' },
     { first_name: 'Taras', last_name: 'Kravchyk', phone: '380631775053',
-      email: 'qweasd4@gmail.com', password: 'vbndfg' }
+      email: 'qweasd4@gmail.com', password: 'tenant' }
   ]
 )
 properties = Property.create(
   [
     { name: 'Apartament', description: 'Smart apartment',
-      price: 500, provider_id: 1, location: 'Lviv' },
+      price: 500, provider_id: 2, location: 'Lviv' },
     { name: 'Apartament', description: 'Luxury apartament',
-      price: 400, provider_id: 1, location: 'Lviv' },
-    { name: 'Apartament', description: 'Сomfortable apartment ',
-      price: 300, provider_id: 1, location: 'Lviv' },
+      price: 400, provider_id: 2, location: 'Lviv' },
+    { name: 'Apartament', description: 'Сomfortable apartment',
+      price: 300, provider_id: 2, location: 'Lviv' },
     { name: 'Apartament', description: 'Low cost apartament',
-      price: 150, provider_id: 1, location: 'Lviv' },
+      price: 150, provider_id: 2, location: 'Lviv' },
     { name: 'Apartament', description: 'Small apartament',
-      price: 200, provider_id: 1, location: 'Lviv' },
+      price: 200, provider_id: 2, location: 'Lviv' },
     { name: 'House', description: 'Big house',
-      price: 1500, provider_id: 1, location: 'Lviv oblast' }
+      price: 1500, provider_id: 2, location: 'Lviv oblast' }
   ]
 )
 booking = Booking.create(
   [
-    { tenant_id: 2, property_id: 4, start_rent_at: '01.01.21 ', end_rent_at: '02.01.21' },
-    { tenant_id: 3, property_id: 3, start_rent_at: '01.01.21', end_rent_at: '02.01.21' },
-    { tenant_id: 4, property_id: 3, start_rent_at: '01.01.21', end_rent_at: '02.01.21' }
+    { tenant_id: 3, property_id: 3,
+      start_rent_at: '01.01.2021', end_rent_at: '03.02.2021' },
+    { tenant_id: 4, property_id: 4,
+      start_rent_at: '01.01.2021', end_rent_at: '02.01.2021' }
+  ]
+)
+payment = Payment.create(
+  [
+    { payer_id: 3, recipient_id: 2, booking_id: 1, amount: 300 },
+    { payer_id: 4, recipient_id: 2, booking_id: 2, amount: 150 }
+  ]
+)
+
+chat = Chat.create(
+  [
+    { booking_id: 1 },
+    { booking_id: 2 }
   ]
 )
 reviews = Review.create(
