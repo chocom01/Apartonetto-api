@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   resources :payments, only: %i[index show create update destroy]
   patch '/payments/:id/pay', to: 'payments#pay'
   patch '/payments/:id/reject', to: 'payments#reject'
-  # resources :users, only: %i[index update]
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  resources :chats, only: %i[show update]
+  get '/chats/:id/messages', to: 'chats#messages'
+
+  post '/chats/:id/messages', to: 'messages#create'
 end
