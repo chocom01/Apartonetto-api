@@ -1,4 +1,4 @@
-
+# frozen_string_literal: true
 
 class ChatsController < ApplicationController
   before_action :find_chat, only: %i[show messages]
@@ -15,7 +15,7 @@ class ChatsController < ApplicationController
   private
 
   def find_chat
-    @chat = 
+    @chat =
       case current_user.role
       when 'tenant'
         current_user.tenant_chats.find(params[:id])
