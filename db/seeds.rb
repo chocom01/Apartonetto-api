@@ -38,22 +38,24 @@ properties = Property.create(
 booking = Booking.create(
   [
     { tenant_id: 3, property_id: 3,
-      start_rent_at: '01.01.2021', end_rent_at: '03.02.2021' },
-    { tenant_id: 4, property_id: 4,
-      start_rent_at: '01.01.2021', end_rent_at: '02.01.2021' }
+      start_rent_at: '2021.01.01', end_rent_at: '2021.02.05' },
+    { tenant_id: 3, property_id: 3,
+      start_rent_at: '2021.05.01', end_rent_at: '2021.06.01' }
   ]
 )
 payment = Payment.create(
   [
-    { payer_id: 3, recipient_id: 2, booking_id: 1, amount: 300 },
-    { payer_id: 4, recipient_id: 2, booking_id: 2, amount: 150 }
+    { payer_id: 3, recipient_id: 2, booking_id: 1, amount: 10_500,
+      service: 'Paypal', info: 'payment for apartament' },
+    { payer_id: 3, recipient_id: 2, booking_id: 2, amount: 9300,
+      service: 'Paypal', info: 'payment for apartament' }
   ]
 )
 
 chat = Chat.create(
   [
-    { booking_id: 1 },
-    { booking_id: 2 }
+    { booking_id: 1, tenant_id: 3, provider_id: 2 },
+    { booking_id: 2, tenant_id: 3, provider_id: 2 }
   ]
 )
 reviews = Review.create(
