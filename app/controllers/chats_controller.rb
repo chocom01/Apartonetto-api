@@ -1,39 +1,35 @@
 
 
 class ChatsController < ApplicationController
-  before_action :for_show, only: %i[show]
-  before_action :read_messages, only: %i[messages]
+  before_action :find_chat, only: %i[show messages]
+  after_action :read_messages, only: %i[messages]
 
   def show
-    render json: chat
+    render json: @chat
   end
 
   def messages
-    render json: message
+    render json: @chat.messages
   end
 
   private
 
-  attr_reader :chat, :message
-
-  def for_show
-    case current_user.role
-    when 'tenant'
-      @chat = current_user.tenant_chats.find_by({ id: params[:id] }) ||
-              head(:not_found)
-    when 'provider'
-      @chat = current_user.provider_chats.find_by({ id: params[:id] }) ||
-              head(:not_found)
-    end
+  def find_chat
+    @chat = 
+      case current_user.role
+      when 'tenant'
+        current_user.tenant_chats.find(params[:id])
+      when 'provider'
+        current_user.provider_chats.find(params[:id])
+      end
   end
 
   def read_messages
-    for_show
     case current_user.role
     when 'tenant'
-      @message = chat.update(tenant_unread_messages_count: 0) && chat.messages
+      @chat.update(tenant_unread_messages_count: 0)
     when 'provider'
-      @message = chat.update(provider_unread_messages_count: 0) && chat.messages
+      @chat.update(provider_unread_messages_count: 0)
     end
   end
 end
