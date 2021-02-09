@@ -11,9 +11,19 @@ class Booking < ApplicationRecord
 
   validate :end_date_is_after_start_date
   validate :true_role
+  validate :date_is_free
 
   def property_price
     property.price * (end_rent_at - start_rent_at).to_i
+  end
+
+  def date_is_free
+    if property.bookings.where(
+      ':initial_date < end_rent_at AND :finale_date > start_rent_at',
+      { initial_date: start_rent_at, finale_date: end_rent_at }
+    ).exists?
+      errors.add(:booking, 'date already taken')
+    end
   end
 
   private

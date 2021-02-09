@@ -65,7 +65,8 @@ class BookingsController < ApplicationController
   def creating_params
     @booking = Booking.new(tenant: current_user, **booking_params)
     @payment = Payment.new(payment_params)
-    @chat = Chat.new({ booking: booking })
+    @chat = Chat.new({ booking: booking, tenant: current_user,
+                       provider: booking.property.provider })
   end
 
   def edit_params
