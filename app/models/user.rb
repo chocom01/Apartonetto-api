@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :messages
   has_many :sent_payments, class_name: 'Payment', foreign_key: :payer_id
   has_many :received_payments, class_name: 'Payment', foreign_key: :recipient_id
+  has_many :tenant_chats, class_name: 'Chat', foreign_key: :tenant_id
+  has_many :provider_chats, class_name: 'Chat', foreign_key: :provider_id
   has_many :own_reviews, class_name: 'Review', foreign_key: :reviewer_id
   has_many :reviews, as: :reviewable
 
