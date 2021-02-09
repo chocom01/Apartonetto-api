@@ -2,10 +2,9 @@
 
 class BookingsController < ApplicationController
   before_action :load_booking, only: %i[show update cancel confirm declin]
-  before_action :load_role, only: %i[index]
-  before_action :creating_params, only: %i[create]
 
   def index
+    load_role
     render json: booking # .page(params[:page])
   end
 
@@ -14,6 +13,7 @@ class BookingsController < ApplicationController
   end
 
   def create
+    creating_params
     return render_errors(booking.errors) unless
      booking.save && payment.save && chat.save
 
