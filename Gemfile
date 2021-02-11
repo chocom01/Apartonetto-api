@@ -14,6 +14,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'knock'
 gem 'rspec_api_documentation'
+gem 'sidekiq'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
