@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-users = User.create(
+@users = User.create(
   [
     { email: 'admin@gmail.com', password: 'admin', role: 2 },
     { first_name: 'Kolya', last_name: 'Vasyliv', phone: '380631775050',
@@ -19,7 +19,7 @@ users = User.create(
       email: 'qweasd4@gmail.com', password: 'tenant' }
   ]
 )
-properties = Property.create(
+@properties = Property.create(
   [
     { name: 'Apartament', description: 'Smart apartment',
       price: 500, provider_id: 2, location: 'Lviv' },
@@ -35,7 +35,7 @@ properties = Property.create(
       price: 1500, provider_id: 2, location: 'Lviv oblast' }
   ]
 )
-booking = Booking.create(
+@booking = Booking.create(
   [
     { tenant_id: 3, property_id: 3,
       start_rent_at: '2021.01.01', end_rent_at: '2021.02.05' },
@@ -43,7 +43,7 @@ booking = Booking.create(
       start_rent_at: '2021.05.01', end_rent_at: '2021.06.01' }
   ]
 )
-payment = Payment.create(
+@payment = Payment.create(
   [
     { payer_id: 3, recipient_id: 2, booking_id: 1, amount: 10_500,
       service: 'Paypal', info: 'payment for apartament' },
@@ -52,13 +52,13 @@ payment = Payment.create(
   ]
 )
 
-chat = Chat.create(
+@chat = Chat.create(
   [
     { booking_id: 1, tenant_id: 3, provider_id: 2 },
     { booking_id: 2, tenant_id: 3, provider_id: 2 }
   ]
 )
-reviews = Review.create(
+@reviews = Review.create(
   [
     { reviewer_id: 2, reviewable: Property.find(4),
       rate: 3, text: 'Normal apartment' },
