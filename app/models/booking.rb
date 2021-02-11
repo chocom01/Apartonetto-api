@@ -4,6 +4,11 @@ class Booking < ApplicationRecord
   paginates_per 10
   enum status: %i[waiting_for_confirm confirmed declined canceled]
 
+  scope :by_property, ->(property_id) { where(property_id: property_id) }
+  scope :reserved_in, lambda { |start_rent_at, end_rent_at|
+    where('? < end_rent_at AND ? > start_rent_at', start_rent_at, end_rent_at)
+  }
+
   belongs_to :tenant, class_name: 'User'
   belongs_to :property
   has_one :payment, dependent: :destroy
@@ -11,22 +16,18 @@ class Booking < ApplicationRecord
 
   validate :end_date_is_after_start_date
   validate :true_role
-  validate :date_is_free
+  validate :free_date, on: :create
 
-  def property_price
+  def property_price_for_all_period
     property.price * (end_rent_at - start_rent_at).to_i
   end
 
-  def date_is_free
-    if property.bookings.where(
-      ':initial_date < end_rent_at AND :finale_date > start_rent_at',
-      { initial_date: start_rent_at, finale_date: end_rent_at }
-    ).exists?
-      errors.add(:booking, 'date already taken')
-    end
-  end
-
   private
+
+  def free_date
+    Booking.by_property(property).reserved_in(start_rent_at, end_rent_at)
+           .exists? && errors.add(:booking, 'date already taken')
+  end
 
   def true_role
     tenant.role == 'tenant' ||
