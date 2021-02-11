@@ -1,18 +1,14 @@
 # frozen_string_literal: true
 
 class PropertiesController < ApplicationController
-  before_action :load_property, only: %i[update destroy]
+  before_action :load_own_property, only: %i[update destroy]
 
   def index
-    properties = Property.all
-    render json: properties.page(params[:page])
+    render json: Property.all.page(params[:page])
   end
 
   def show
-    property = Property.find_by(id: params[:id])
-    return head(:not_found) unless property
-
-    render json: property
+    render json: Property.find(params[:id])
   end
 
   def create
@@ -23,24 +19,24 @@ class PropertiesController < ApplicationController
   end
 
   def update
-    return render_errors(property.errors) unless property.update(property_params)
+    return render_errors(@property.errors) unless
+    @property.update(property_params)
 
-    render json: property
+    render json: @property
   end
 
   def destroy
-    property.destroy
+    @property.destroy
   end
 
   private
-
-  attr_reader :property
 
   def property_params
     params.require(:property).permit(:name, :location, :description, :price)
   end
 
-  def load_property
-    @property = Property.find_by(provider: current_user, id: params[:id]) || head(:not_found)
+  def load_own_property
+    @property = Property.find_by(provider: current_user, id: params[:id]) ||
+                head(:not_found)
   end
 end
