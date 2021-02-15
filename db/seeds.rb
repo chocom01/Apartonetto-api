@@ -16,7 +16,7 @@
     { first_name: 'Nazar', last_name: 'Ivleev', phone: '380631775052',
       email: 'qweasd3@gmail.com', password: 'tenant' },
     { first_name: 'Taras', last_name: 'Kravchyk', phone: '380631775053',
-      email: 'qweasd4@gmail.com', password: 'tenant' }
+      email: 'qweasd4@gmail.com', password: 'provider', role: 1 }
   ]
 )
 @properties = Property.create(
