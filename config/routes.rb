@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   post '/sign_in', to: 'user_token#sign_in'
-  post '/sign_up', to: 'user_token#sign_up'
+  post '/create', to: 'users#create'
   patch '/update', to: 'users#update'
 
   resources :properties, only: %i[index show create update destroy]
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   patch '/payments/:id/pay', to: 'payments#pay'
   patch '/payments/:id/reject', to: 'payments#reject'
 
-  resources :chats, only: %i[show update]
+  resources :chats, only: %i[index show update]
   get '/chats/:id/messages', to: 'chats#messages'
 
   post '/chats/:id/messages', to: 'messages#create'
