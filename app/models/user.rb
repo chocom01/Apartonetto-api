@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :provider_chats, class_name: 'Chat', foreign_key: :provider_id
   has_many :own_reviews, class_name: 'Review', foreign_key: :reviewer_id
   has_many :reviews, as: :reviewable
+  has_many :provider_bookings, through: :properties, source: :bookings
 
   validates :first_name, :last_name,
             length: { in: 3..11 }, if: :role_validate
