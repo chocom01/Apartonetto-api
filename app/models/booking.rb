@@ -15,7 +15,6 @@ class Booking < ApplicationRecord
   has_one :chat, dependent: :destroy
 
   validate :end_date_is_after_start_date
-  validate :true_role
   validate :free_date, on: :create
 
   def property_price_for_all_period
@@ -27,11 +26,6 @@ class Booking < ApplicationRecord
   def free_date
     Booking.by_property(property).reserved_in(start_rent_at, end_rent_at)
            .exists? && errors.add(:booking, 'date already taken')
-  end
-
-  def true_role
-    tenant.role == 'tenant' ||
-      errors.add(:role, 'must be tenant')
   end
 
   def end_date_is_after_start_date
