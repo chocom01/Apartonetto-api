@@ -2,12 +2,12 @@
 
 class Booking < ApplicationRecord
   paginates_per 10
-  enum status: %i[waiting_for_confirm confirmed declined canceled]
-
   scope :by_property, ->(property_id) { where(property_id: property_id) }
   scope :reserved_in, lambda { |start_rent_at, end_rent_at|
     where('? < end_rent_at AND ? > start_rent_at', start_rent_at, end_rent_at)
   }
+  enum status: { waiting_for_confirm: 0,
+                 confirmed: 1, declined: 2, canceled: 3 }
 
   belongs_to :tenant, class_name: 'User'
   belongs_to :property

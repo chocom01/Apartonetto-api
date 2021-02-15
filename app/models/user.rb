@@ -2,7 +2,7 @@
 
 class User < ApplicationRecord
   paginates_per 10
-  enum role: %i[tenant provider admin]
+  enum role: { tenant: 0, provider: 1, admin: 2 }
   has_secure_password
 
   has_many :properties, foreign_key: :provider_id
