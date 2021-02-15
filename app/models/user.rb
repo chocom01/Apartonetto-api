@@ -21,9 +21,8 @@ class User < ApplicationRecord
   validates :password, length: { in: 5..15 }
   validates :phone, numericality: true, length: { in: 10..12 },
                     uniqueness: true, if: :role_validate
-  validates_format_of :email,
-                      with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i,
-                      uniqueness: true
+  validates :email, uniqueness: true, format:
+                      { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
 
   private
 
