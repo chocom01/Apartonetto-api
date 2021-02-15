@@ -3,6 +3,12 @@
 class ChatsController < ApplicationController
   before_action :find_chat, only: %i[show messages]
   after_action :read_messages, only: %i[messages]
+  before_action :authenticate_user
+
+  def index
+    chat = policy_scope(Chat)
+    render json: chat
+  end
 
   def show
     render json: @chat
@@ -15,13 +21,7 @@ class ChatsController < ApplicationController
   private
 
   def find_chat
-    @chat =
-      case current_user.role
-      when 'tenant'
-        current_user.tenant_chats.find(params[:id])
-      when 'provider'
-        current_user.provider_chats.find(params[:id])
-      end
+    authorize @chat = Chat.find(params[:id])
   end
 
   def read_messages

@@ -2,10 +2,11 @@
 
 class BookingsController < ApplicationController
   before_action :load_booking, only: %i[show cancel confirm declin]
+  before_action :authenticate_user
 
   def index
-    load_bookings_by_role
-    render json: @bookings.page(params[:page])
+    bookings = policy_scope(Booking)
+    render json: bookings.page(params[:page])
   end
 
   def show
@@ -13,34 +14,29 @@ class BookingsController < ApplicationController
   end
 
   def create
-    new_booking_payment_chat
-    return render_errors(@booking.errors) unless
-     @booking.save && @payment.save && @chat.save
+    @booking = authorize Booking.new(tenant: current_user, **booking_params)
+    @payment = Payment.new(payment_params)
+    @chat = Chat.new(chat_params)
+    unless @booking.save && @payment.save && @chat.save
+      return render_errors(@booking.errors)
+    end
 
-    # CheckIfAcceptedWorker.set(wait: 8.hour).perform_later
-    # CheckIfAcceptedWorker.perform_in(1.second.from_now, booking.id)
     render json: { booking: @booking, payment: @payment, chat: @chat }
   end
 
   def cancel
-    @booking.errors.add(:status, "provider can't change status to canceled")
-    return render_errors(@booking.errors) unless current_user.role == 'tenant'
-
-    render json: @booking if @booking.canceled!
+    @booking.canceled!
+    render json: @booking
   end
 
   def confirm
-    @booking.errors.add(:status, "tenant can't change status to confirmed")
-    return render_errors(booking.errors) unless current_user.role == 'provider'
-
-    render json: @booking if @booking.confirmed!
+    @booking.confirmed!
+    render json: @booking
   end
 
   def declin
-    @booking.errors.add(:status, "tenant can't change status to declined")
-    return render_errors(@booking.errors) unless current_user.role == 'provider'
-
-    render json: @booking if @booking.declined!
+    @booking.declined!
+    render json: @booking
   end
 
   private
@@ -57,26 +53,12 @@ class BookingsController < ApplicationController
       info: "payment for #{@booking.property.name.downcase}" }
   end
 
-  def new_booking_payment_chat
-    @booking = Booking.new(tenant: current_user, **booking_params)
-    @payment = Payment.new(payment_params)
-    @chat = Chat.new({ booking: @booking, tenant: current_user,
-                       provider: @booking.property.provider })
+  def chat_params
+    { booking: @booking, tenant: current_user,
+      provider: @booking.property.provider }
   end
 
   def load_booking
-    @booking = load_bookings_by_role.find(params[:id])
-  end
-
-  def load_bookings_by_role
-    @bookings =
-      case current_user.role
-      when 'provider'
-        Booking.where(current_user.properties.include?(:property))
-      when 'tenant'
-        Booking.where(tenant: current_user)
-      else
-        head(:not_found)
-      end
+    authorize @booking = Booking.find(params[:id])
   end
 end

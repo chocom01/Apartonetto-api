@@ -2,9 +2,12 @@
 
 class MessagesController < ApplicationController
   after_action :add_unread_count, only: %i[create]
+  before_action :authenticate_user
 
   def create
-    new_message_with_params
+    @chat = policy_scope(Chat).find(params[:id])
+    @message = Message.new(user: current_user, chat: @chat, **message_params)
+
     return render_errors(@message.errors) unless @message.save
 
     render json: @message
@@ -12,11 +15,8 @@ class MessagesController < ApplicationController
 
   private
 
-  def new_message_with_params
-    @chat = current_user.tenant_chats.find(params[:id]) if current_user.tenant?
-    @chat = current_user.provider_chats.find(params[:id]) if current_user.provider?
-    message_params = params.require(:message).permit(:text)
-    @message = Message.new(user: current_user, chat: @chat, **message_params)
+  def message_params
+    params.require(:message).permit(:text)
   end
 
   def add_unread_count
