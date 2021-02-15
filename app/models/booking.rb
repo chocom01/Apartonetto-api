@@ -2,10 +2,6 @@
 
 class Booking < ApplicationRecord
   paginates_per 10
-  scope :by_property, ->(property_id) { where(property_id: property_id) }
-  scope :reserved_in, lambda { |start_rent_at, end_rent_at|
-    where('? < end_rent_at AND ? > start_rent_at', start_rent_at, end_rent_at)
-  }
   enum status: { waiting_for_confirm: 0,
                  confirmed: 1, declined: 2, canceled: 3 }
 
@@ -17,6 +13,11 @@ class Booking < ApplicationRecord
   validate :end_date_is_after_start_date
   validate :free_date, on: :create
 
+  scope :by_property, ->(property_id) { where(property_id: property_id) }
+  scope :reserved_in, lambda { |start_rent_at, end_rent_at|
+    where('? < end_rent_at AND ? > start_rent_at', start_rent_at, end_rent_at)
+  }
+
   def property_price_for_all_period
     property.price * (end_rent_at - start_rent_at).to_i
   end
@@ -25,6 +26,7 @@ class Booking < ApplicationRecord
 
   def free_date
     Booking.by_property(property).reserved_in(start_rent_at, end_rent_at)
+           .where(status: %i[confirmed waiting_for_confirm])
            .exists? && errors.add(:booking, 'date already taken')
   end
 
