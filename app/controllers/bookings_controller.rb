@@ -17,7 +17,11 @@ class BookingsController < ApplicationController
     @booking = authorize Booking.new(tenant: current_user, **booking_params)
     @payment = Payment.new(payment_params)
     @chat = Chat.new(chat_params)
-    unless @booking.save && @payment.save && @chat.save
+    begin
+      @booking.transaction do
+        @booking.save! && @payment.save! && @chat.save!
+      end
+    rescue ActiveRecord::RecordInvalid
       return render_errors(@booking.errors)
     end
     render json: { booking: @booking, payment: @payment, chat: @chat }
