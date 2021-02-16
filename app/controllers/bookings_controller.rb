@@ -20,7 +20,6 @@ class BookingsController < ApplicationController
     unless @booking.save && @payment.save && @chat.save
       return render_errors(@booking.errors)
     end
-
     render json: { booking: @booking, payment: @payment, chat: @chat }
   end
 
@@ -34,7 +33,7 @@ class BookingsController < ApplicationController
     render json: @booking
   end
 
-  def declin
+  def decline
     @booking.declined!
     render json: @booking
   end
@@ -42,19 +41,25 @@ class BookingsController < ApplicationController
   private
 
   def booking_params
-    params.require(:booking).permit(:property_id,
-                                    :start_rent_at, :end_rent_at)
+    params.require(:booking).permit(
+      :property_id,
+      :start_rent_at,
+      :end_rent_at
+    )
   end
 
   def payment_params
-    { booking: @booking, payer: current_user,
+    { booking: @booking,
+      payer: current_user,
       amount: @booking.property_price_for_all_period,
-      recipient: @booking.property.provider, service: 'Paypal',
+      recipient: @booking.property.provider,
+      service: 'Paypal',
       info: "payment for #{@booking.property.name.downcase}" }
   end
 
   def chat_params
-    { booking: @booking, tenant: current_user,
+    { booking: @booking,
+      tenant: current_user,
       provider: @booking.property.provider }
   end
 

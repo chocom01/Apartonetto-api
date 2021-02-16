@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :bookings, only: %i[index show create update]
   patch '/bookings/:id/cancel', to: 'bookings#cancel'
   patch '/bookings/:id/confirm', to: 'bookings#confirm'
-  patch '/bookings/:id/declin', to: 'bookings#declin'
+  patch '/bookings/:id/decline', to: 'bookings#decline'
 
   resources :payments, only: %i[index show]
   patch '/payments/:id/pay', to: 'payments#pay'

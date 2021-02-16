@@ -7,6 +7,6 @@ class Property < ApplicationRecord
   has_many :bookings
 
   validates :name, :location, length: { in: 4..20 }
-  validates_presence_of :description
+  validates :description, presence: true
   validates :price, numericality: { greater_than: 0, less_than: 10_000 }
 end

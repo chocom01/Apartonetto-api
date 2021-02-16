@@ -2,7 +2,13 @@
 
 class User < ApplicationRecord
   paginates_per 10
-  enum role: { tenant: 0, provider: 1, admin: 2 }
+
+  enum role: {
+    tenant: 0,
+    provider: 1,
+    admin: 2
+  }
+
   has_secure_password
 
   has_many :properties, foreign_key: :provider_id
@@ -16,17 +22,18 @@ class User < ApplicationRecord
   has_many :reviews, as: :reviewable
   has_many :provider_bookings, through: :properties, source: :bookings
 
-  validates :first_name, :last_name,
-            length: { in: 3..11 }, if: :role_validate
+  validates :first_name, :last_name, length: { in: 3..11 }, if: :skip_for_admin
   validates :password, length: { in: 5..15 }
   validates :phone, numericality: true, length: { in: 10..12 },
-                    uniqueness: true, if: :role_validate
-  validates :email, uniqueness: true, format:
-                      { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
+                    uniqueness: true,
+                    if: :skip_for_admin
+  validates :email,
+            uniqueness: true,
+            format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
 
   private
 
-  def role_validate
-    role == 'tenant' || role == 'provider'
+  def skip_for_admin
+    tenant? || provider?
   end
 end
