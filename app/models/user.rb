@@ -11,9 +11,9 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  has_many :properties, foreign_key: :provider_id
-  has_many :bookings, foreign_key: :tenant_id
-  has_many :messages
+  has_many :properties, foreign_key: :provider_id, dependent: :destroy
+  has_many :bookings, foreign_key: :tenant_id, dependent: :destroy
+  has_many :messages, dependent: :destroy
   has_many :sent_payments, class_name: 'Payment', foreign_key: :payer_id
   has_many :received_payments, class_name: 'Payment', foreign_key: :recipient_id
   has_many :tenant_chats, class_name: 'Chat', foreign_key: :tenant_id
