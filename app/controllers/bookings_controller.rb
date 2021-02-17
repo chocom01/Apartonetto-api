@@ -15,6 +15,7 @@ class BookingsController < ApplicationController
 
   def create
     @booking = authorize Booking.new(tenant: current_user, **booking_params)
+    @booking.amount_for_period = @booking.property_price_for_all_period
     @payment = Payment.new(payment_params)
     @chat = Chat.new(chat_params)
     begin
@@ -55,7 +56,7 @@ class BookingsController < ApplicationController
   def payment_params
     { booking: @booking,
       payer: current_user,
-      amount: @booking.property_price_for_all_period,
+      amount: @booking.amount_for_period,
       recipient: @booking.property.provider,
       service: 'Paypal',
       info: "payment for #{@booking.property.name.downcase}" }
