@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_09_113122) do
+ActiveRecord::Schema.define(version: 2021_02_16_164715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2021_02_09_113122) do
     t.date "end_rent_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "amount_for_period"
     t.index ["property_id"], name: "index_bookings_on_property_id"
     t.index ["tenant_id"], name: "index_bookings_on_tenant_id"
   end
