@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :properties, only: %i[index show create update destroy]
 
-  resources :bookings, only: %i[index show create update]
+  resources :bookings, only: %i[index show create]
   patch '/bookings/:id/cancel', to: 'bookings#cancel'
   patch '/bookings/:id/confirm', to: 'bookings#confirm'
   patch '/bookings/:id/decline', to: 'bookings#decline'
