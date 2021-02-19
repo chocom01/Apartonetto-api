@@ -28,7 +28,7 @@ class BookingPolicy < ApplicationPolicy
       record.payment.paid?
   end
 
-  def declin?
+  def decline?
     record.property.provider == user && record.waiting_for_confirm?
   end
 end

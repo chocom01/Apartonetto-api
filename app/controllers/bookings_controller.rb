@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BookingsController < ApplicationController
-  before_action :load_booking, only: %i[show cancel confirm declin]
+  before_action :load_booking, only: %i[show cancel confirm decline]
   before_action :authenticate_user
 
   def index
