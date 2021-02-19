@@ -2,3 +2,5 @@ Layout/LineLength:
   Max: 80
   Exclude:
     - 'db/schema.rb'
+Metrics/BlockLength:
+  Max: 120
