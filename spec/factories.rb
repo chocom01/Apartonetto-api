@@ -2,57 +2,50 @@
 
 FactoryBot.define do
   factory :user do
-    first_name { 'MyString' }
-    last_name { 'MyString' }
-    phone { 123_456_729_12 }
-    email { 'asfasag@gmail.com' }
-    password { 'MyString' }
+    first_name { 'Kolya' }
+    last_name { 'Vasyliv' }
+    phone { rand(100_000_000_00..600_000_000_00).to_s }
+    email { "#{SecureRandom.alphanumeric[0...-7]}@gmail.com" }
+    password { 'qweasdzxc' }
     role { 0 }
   end
 
   factory :property do
-    name { 'MyString' }
-    location { 'MyString' }
-    description { 'MyText' }
+    name { 'Apartament' }
+    location { 'Lviv' }
+    description { 'Big apartament' }
     price { 400 }
-    association :provider, factory: :user, role: 1
+    association :provider, factory: :user, role: 'provider'
   end
 
   factory :booking do
     association :tenant, factory: :user
     property
-    status { 0 }
-    start_rent_at { '01.01.2000' }
-    end_rent_at { '02.01.2000' }
+    start_rent_at { '2000.01.01' }
+    end_rent_at { '2000.01.02' }
+    amount_for_period { 400 }
   end
 
   factory :payment do
+    booking
     payer { booking.tenant }
     recipient { booking.property.provider }
-    service { 'MyString' }
-    info { 'MyString' }
+    service { 'Paypal' }
+    info { 'payment for big apartament' }
     amount { 400 }
   end
 
-  # factory :chat do
-  #   booking { 'MyString' }
-  #   tenant_unread_messages_count { 1 }
-  #   provider_unread_messages_count { 1 }
-  #   tenant
-  #   provider
-  # end
-  #
-  # factory :message do
-  #   user
-  #   chat { 'MyString' }
-  #   text { 'MyText' }
-  # end
+  factory :chat do
+    booking
+    tenant_unread_messages_count { 0 }
+    provider_unread_messages_count { 0 }
+    tenant { booking.tenant }
+    provider { booking.property.provider }
+  end
 
-  # trait :for_property do
-  #   association :reviewable, factory: :property
-  # end
-  #
-  # trait :for_user do
-  #   association :reviewable, factory: :user
-  # end
+  factory :message do
+    user { chat.tenant }
+    chat
+    text { 'some text' }
+  end
 end
