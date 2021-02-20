@@ -44,7 +44,7 @@ FactoryBot.define do
   end
 
   factory :message do
-    user { chat.tenant }
+    user { chat.provider }
     chat
     text { 'some text' }
   end
