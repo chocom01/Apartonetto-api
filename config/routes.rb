@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   patch '/payments/:id/pay', to: 'payments#pay'
   patch '/payments/:id/reject', to: 'payments#reject'
 
-  resources :chats, only: %i[index show update]
+  resources :chats, only: %i[index show]
   get '/chats/:id/messages', to: 'chats#messages'
 
   post '/chats/:id/messages', to: 'messages#create'
