@@ -6,8 +6,8 @@ require 'rspec_api_documentation/dsl'
 RSpec.resource 'Payments' do
   header 'Authorization', :auth_token
   let!(:auth_token) do
-    "Bearer #{Knock::AuthToken.new(payload: { sub: payment.payer.id })
-                              .token}"
+    "Bearer #{Knock::AuthToken.new(payload:
+    { sub: payment.payer.id }).token}"
   end
 
   let!(:payment) { create(:payment) }
