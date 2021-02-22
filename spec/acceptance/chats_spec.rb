@@ -48,10 +48,10 @@ RSpec.resource 'Chats' do
     let!(:message) { create(:message, chat: chat) }
     let!(:message1) { create(:message, chat: chat) }
 
-    example 'Getting chat of current user by id' do
+    example 'Getting chat messages by current user' do
       expect(chat.reload.tenant_unread_messages_count).to eq(2)
-      do_request
-      expect(chat.reload.tenant_unread_messages_count).to eq(0)
+      expect { do_request }
+        .to change { chat.reload.provider_unread_messages_count }.by(0)
       messages_hash = JSON.parse(response_body, symbolize_names: true)
       expect(messages_hash.pluck(:id))
         .to match_array([message.id, message1.id])

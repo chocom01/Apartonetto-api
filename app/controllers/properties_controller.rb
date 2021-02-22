@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class PropertiesController < ApplicationController
-  before_action :find_property, only: %i[show update destroy]
   before_action :authenticate_user, only: %i[create update destroy]
+  before_action :find_property, only: %i[show update destroy]
 
   def index
     render json: Property.all.page(params[:page])
