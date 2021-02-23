@@ -14,7 +14,10 @@ FactoryBot.define do
     name { 'Apartament' }
     location { 'Lviv' }
     description { 'Big apartament' }
+    address { 'Lincoln 1' }
     price { 400 }
+    rooms_count { 4 }
+    guests_capacity { 9 }
     association :provider, factory: :user, role: 'provider'
   end
 
@@ -23,6 +26,7 @@ FactoryBot.define do
     property
     start_rent_at { '2000.01.01' }
     end_rent_at { '2000.01.02' }
+    number_of_guests { 5 }
     amount_for_period { 400 }
   end
 
