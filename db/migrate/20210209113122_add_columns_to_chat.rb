@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddColumnsToChat < ActiveRecord::Migration[6.0]
   def change
     change_table(:chats) do |t|
