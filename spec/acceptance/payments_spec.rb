@@ -45,7 +45,7 @@ RSpec.resource 'Payments' do
 
   patch '/payments/:id/pay' do
     example 'Updating status payment to paid by current user' do
-      expect(payment.status).to eq('waiting_for_payment')
+      expect(payment.reload.status).to eq('waiting_for_payment')
       do_request
       expect(payment.reload.id).to eq(id)
       expect(payment.status).to eq('paid')
@@ -55,7 +55,7 @@ RSpec.resource 'Payments' do
 
   patch '/payments/:id/reject' do
     example 'Updating status payment to rejected by current user' do
-      expect(payment.status).to eq('waiting_for_payment')
+      expect(payment.reload.status).to eq('waiting_for_payment')
       do_request
       expect(payment.reload.id).to eq(id)
       expect(payment.status).to eq('rejected')

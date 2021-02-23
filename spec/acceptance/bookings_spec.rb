@@ -22,6 +22,8 @@ RSpec.resource 'Bookings' do
       expect(bookings_hash[0][:end_rent_at]).to eq(booking.end_rent_at.to_s)
       expect(bookings_hash[0][:amount_for_period])
         .to eq(booking.amount_for_period)
+      expect(bookings_hash[0][:number_of_guests])
+        .to eq(booking.number_of_guests)
       expect(status).to eq 200
     end
   end
@@ -35,6 +37,7 @@ RSpec.resource 'Bookings' do
       expect(booking_hash[:start_rent_at]).to eq(booking.start_rent_at.to_s)
       expect(booking_hash[:end_rent_at]).to eq(booking.end_rent_at.to_s)
       expect(booking_hash[:amount_for_period]).to eq(booking.amount_for_period)
+      expect(booking_hash[:number_of_guests]).to eq(booking.number_of_guests)
       expect(status).to eq 200
     end
   end
@@ -44,6 +47,7 @@ RSpec.resource 'Bookings' do
       parameter :property_id, 'Booking property'
       parameter :start_rent_at, 'Booking start_rent_at'
       parameter :end_rent_at, 'Booking end_rent_at'
+      parameter :number_of_guests, 'Number of guests booking'
     end
 
     let!(:tenant) { create(:user) }
@@ -55,6 +59,7 @@ RSpec.resource 'Bookings' do
     let(:property_id) { property.id }
     let(:start_rent_at) { '2020.04.01' }
     let(:end_rent_at) { '2020.04.02' }
+    let(:number_of_guests) { 4 }
 
     example 'Creating booking, by current user' do
       expect { do_request }.to change { Booking.count }
@@ -72,6 +77,7 @@ RSpec.resource 'Bookings' do
       expect(booking.start_rent_at).to eq(start_rent_at.to_date)
       expect(booking.end_rent_at).to eq(end_rent_at.to_date)
       expect(booking.amount_for_period).to eq(booking.payment.amount)
+      expect(booking.number_of_guests).to eq(number_of_guests)
       expect(status).to eq 200
     end
   end
@@ -83,7 +89,7 @@ RSpec.resource 'Bookings' do
     end
 
     example 'Updating status booking to canceled, by current user' do
-      expect(booking.status).to eq('waiting_for_confirm')
+      expect(booking.reload.status).to eq('waiting_for_confirm')
       do_request
       expect(booking.reload.id).to eq(id)
       expect(booking.status).to eq('canceled')
@@ -102,7 +108,7 @@ RSpec.resource 'Bookings' do
     end
 
     example 'Updating status booking to confirmed, by current user' do
-      expect(booking.status).to eq('waiting_for_confirm')
+      expect(booking.reload.status).to eq('waiting_for_confirm')
       do_request
       expect(booking.reload.id).to eq(id)
       booking.property.provider
@@ -118,7 +124,7 @@ RSpec.resource 'Bookings' do
     end
 
     example 'Updating status booking to declined, by current user' do
-      expect(booking.status).to eq('waiting_for_confirm')
+      expect(booking.reload.status).to eq('waiting_for_confirm')
       do_request
       expect(booking.reload.id).to eq(id)
       expect(booking.status).to eq('declined')
