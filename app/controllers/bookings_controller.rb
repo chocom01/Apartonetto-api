@@ -52,6 +52,7 @@ class BookingsController < ApplicationController
   def booking_params
     params.require(:booking).permit(
       :property_id,
+      :number_of_guests,
       :start_rent_at,
       :end_rent_at
     )
