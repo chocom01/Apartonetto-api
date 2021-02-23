@@ -22,24 +22,35 @@
 @properties = Property.create(
   [
     { name: 'Apartament', description: 'Smart apartment',
+      address: 'Lincoln 1', guests_capacity: 2, rooms_count: 1,
       price: 500, provider_id: 2, location: 'Lviv' },
+
     { name: 'Apartament', description: 'Luxury apartament',
+      address: 'Lincoln 2', guests_capacity: 3, rooms_count: 2,
       price: 400, provider_id: 2, location: 'Lviv' },
+
     { name: 'Apartament', description: 'Сomfortable apartment',
+      address: 'Lincoln 3', guests_capacity: 4, rooms_count: 3,
       price: 300, provider_id: 2, location: 'Lviv' },
+
     { name: 'Apartament', description: 'Low cost apartament',
+      address: 'Lincoln 4', guests_capacity: 5, rooms_count: 4,
       price: 150, provider_id: 2, location: 'Lviv' },
+
     { name: 'Apartament', description: 'Small apartament',
+      address: 'Lincoln 5', guests_capacity: 6, rooms_count: 5,
       price: 200, provider_id: 2, location: 'Lviv' },
+
     { name: 'House', description: 'Big house',
+      address: 'Lincoln 6', guests_capacity: 7, rooms_count: 6,
       price: 1500, provider_id: 2, location: 'Lviv oblast' }
   ]
 )
 @booking = Booking.create(
   [
-    { tenant_id: 3, property_id: 3,
+    { tenant_id: 3, property_id: 3, number_of_guests: 2,
       start_rent_at: '2021.01.01', end_rent_at: '2021.02.05' },
-    { tenant_id: 3, property_id: 3,
+    { tenant_id: 3, property_id: 3, number_of_guests: 3,
       start_rent_at: '2021.05.01', end_rent_at: '2021.06.01' }
   ]
 )
@@ -58,13 +69,13 @@
     { booking_id: 2, tenant_id: 3, provider_id: 2 }
   ]
 )
-@reviews = Review.create(
-  [
-    { reviewer_id: 2, reviewable: Property.find(4),
-      rate: 3, text: 'Normal apartment' },
-    { reviewer_id: 3, reviewable: Property.find(3),
-      rate: 4, text: 'comfortable enough ' },
-    { reviewer_id: 4, reviewable: Property.find(3),
-      rate: 4, text: 'comfortable enough ' }
-  ]
-)
+# @reviews = Review.create(
+#   [
+#     { reviewer_id: 2, reviewable: Property.find(4),
+#       rate: 3, text: 'Normal apartment' },
+#     { reviewer_id: 3, reviewable: Property.find(3),
+#       rate: 4, text: 'comfortable enough ' },
+#     { reviewer_id: 4, reviewable: Property.find(3),
+#       rate: 4, text: 'comfortable enough ' }
+#   ]
+# )
