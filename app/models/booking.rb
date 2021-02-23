@@ -18,6 +18,8 @@ class Booking < ApplicationRecord
            :end_date_is_after_start_date,
            on: :create,
            if: -> { start_rent_at && end_rent_at }
+  validate :allowable_number_of_guests, on: :create
+  validates :number_of_guests, numericality: { other_than: 0 }
 
   scope :weighted, -> { where(status: %i[confirmed waiting_for_confirm]) }
   scope :by_property, ->(property_id) { where(property_id: property_id) }
@@ -43,5 +45,13 @@ class Booking < ApplicationRecord
     return if end_rent_at > start_rent_at
 
     errors.add(:end_rent_at, 'cannot be before the start date')
+  end
+
+  def allowable_number_of_guests
+    return if number_of_guests <= property.guests_capacity
+
+    errors.add(
+      :number_of_guests, "this apartment doesn't accommodate so many guests"
+    )
   end
 end
