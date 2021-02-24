@@ -5,12 +5,12 @@ class PropertiesController < ApplicationController
   before_action :find_property, only: %i[show update destroy]
 
   # has_scope :price_period
-  has_scope :price_more_than
-  has_scope :price_less_than
-  has_scope :capacity_more_than
-  has_scope :capacity_less_than
-  has_scope :minimum_rooms
-  has_scope :maximum_rooms
+  has_scope :min_price
+  has_scope :max_price
+  has_scope :min_capacity
+  has_scope :max_capacity
+  has_scope :min_rooms
+  has_scope :max_rooms
   has_scope :by_address
 
   def index
