@@ -25,6 +25,7 @@ class BookingsController < ApplicationController
     rescue ActiveRecord::RecordInvalid
       return render_errors(@booking.errors)
     end
+    CheckIfAcceptedWorker.perform_in(8.hours, @booking.id)
     render json: { booking: @booking, payment: @payment, chat: @chat }
   end
 
