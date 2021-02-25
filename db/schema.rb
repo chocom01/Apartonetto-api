@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_23_124937) do
+ActiveRecord::Schema.define(version: 2021_02_24_125550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,14 @@ ActiveRecord::Schema.define(version: 2021_02_23_124937) do
     t.index ["booking_id"], name: "index_payments_on_booking_id"
     t.index ["payer_id"], name: "index_payments_on_payer_id"
     t.index ["recipient_id"], name: "index_payments_on_recipient_id"
+  end
+
+  create_table "photos", force: :cascade do |t|
+    t.text "image_data"
+    t.bigint "property_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["property_id"], name: "index_photos_on_property_id"
   end
 
   create_table "properties", force: :cascade do |t|
