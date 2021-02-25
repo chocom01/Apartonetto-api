@@ -3,6 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.1'
 
+gem 'blueprinter'
+gem 'has_scope'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use postgresql as the database for Active Record
@@ -10,12 +12,12 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'has_scope'
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'knock'
 gem 'pundit'
 gem 'rspec_api_documentation'
+gem 'shrine', '~> 3.0'
 gem 'sidekiq'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
