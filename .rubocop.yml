@@ -4,3 +4,6 @@ Layout/LineLength:
     - 'db/schema.rb'
 Metrics/BlockLength:
   Max: 120
+Style/StringLiterals:
+    Exclude:
+    - 'db/schema.rb'
