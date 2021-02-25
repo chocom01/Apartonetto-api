@@ -46,10 +46,6 @@ class BookingsController < ApplicationController
 
   private
 
-  def booking_amount
-    property_price_for_all_period
-  end
-
   def booking_params
     params.require(:booking).permit(
       :property_id,
