@@ -5,6 +5,7 @@ class Property < ApplicationRecord
   belongs_to :provider, class_name: 'User'
   has_many :reviews, as: :reviewable
   has_many :bookings, dependent: :destroy
+  has_many :photos
 
   validates :name, :location, :address, length: { in: 4..20 }
   validates :description, presence: true
