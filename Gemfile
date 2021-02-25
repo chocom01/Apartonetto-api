@@ -12,6 +12,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'dry-monads'
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'knock'
