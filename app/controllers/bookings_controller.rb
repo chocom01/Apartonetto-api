@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class BookingsController < ApplicationController
-  before_action :load_booking, only: %i[show cancel confirm decline]
   before_action :authenticate_user
+  before_action :load_booking, only: %i[show cancel confirm decline]
 
   def index
     bookings = policy_scope(Booking)
@@ -14,19 +14,10 @@ class BookingsController < ApplicationController
   end
 
   def create
-    @booking = authorize Booking.new(tenant: current_user, **booking_params)
-    @booking.amount_for_period = @booking.property_price_for_all_period
-    @payment = Payment.new(payment_params)
-    @chat = Chat.new(chat_params)
-    begin
-      @booking.transaction do
-        @booking.save! && @payment.save! && @chat.save!
-      end
-    rescue ActiveRecord::RecordInvalid
-      return render_errors(@booking.errors)
-    end
-    CheckIfAcceptedWorker.perform_in(8.hours, @booking.id)
-    render json: { booking: @booking, payment: @payment, chat: @chat }
+    result = Bookings::Create.new.call(booking_params, current_user.id)
+    return render_errors(result.failure) unless result.success?
+
+    render json: result.success
   end
 
   def cancel
@@ -53,21 +44,6 @@ class BookingsController < ApplicationController
       :start_rent_at,
       :end_rent_at
     )
-  end
-
-  def payment_params
-    { booking: @booking,
-      payer: current_user,
-      amount: @booking.amount_for_period,
-      recipient: @booking.property.provider,
-      service: 'Paypal',
-      info: "payment for #{@booking.property.name.downcase}" }
-  end
-
-  def chat_params
-    { booking: @booking,
-      tenant: current_user,
-      provider: @booking.property.provider }
   end
 
   def load_booking
