@@ -14,6 +14,7 @@ class BookingsController < ApplicationController
   end
 
   def create
+    authorize Booking
     result = Bookings::Create.new.call(booking_params, current_user.id)
     return render_errors(result.failure) unless result.success?
 
