@@ -45,7 +45,8 @@ class PropertiesController < ApplicationController
 
   def property_params
     params.require(:property).permit(:name, :location, :description, :price,
-                                     :address, :guests_capacity, :rooms_count)
+                                     :address, :guests_capacity,
+                                     :rooms_count, :minimum_days)
   end
 
   def find_property

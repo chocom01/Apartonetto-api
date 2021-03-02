@@ -10,6 +10,7 @@ class Property < ApplicationRecord
   validates :name, :location, :address, length: { in: 4..20 }
   validates :description, presence: true
   validates :price, numericality: { greater_than: 0, less_than: 10_000 }
+  validates :minimum_days, numericality: { greater_than: 0 }
   validates :guests_capacity, numericality: { greater_than: 1, less_than: 15 }
   validates :rooms_count, numericality: { greater_than: 0, less_than: 12 }
 

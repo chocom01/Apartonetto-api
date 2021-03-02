@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_24_125550) do
+ActiveRecord::Schema.define(version: 2021_03_01_143838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2021_02_24_125550) do
     t.integer "guests_capacity"
     t.string "address"
     t.integer "rooms_count"
+    t.integer "minimum_days"
     t.index ["provider_id"], name: "index_properties_on_provider_id"
   end
 

@@ -53,12 +53,13 @@ RSpec.resource 'Properties' do
       parameter :description, 'Description property'
       parameter :rooms_count, 'Property rooms count'
       parameter :guests_capacity, 'Guests capacity property'
+      parameter :minimum_days, 'Minimum days for book property'
     end
 
+    let(:provider) { create(:user, role: :provider) }
     let!(:auth_token) do
       "Bearer #{Knock::AuthToken.new(payload: { sub: provider.id }).token}"
     end
-    let(:provider) { create(:user, role: :provider) }
 
     let(:name) { 'Property' }
     let(:location) { 'Kyiv' }
@@ -67,6 +68,7 @@ RSpec.resource 'Properties' do
     let(:description) { 'Cool property' }
     let(:rooms_count) { 4 }
     let(:guests_capacity) { 4 }
+    let(:minimum_days) { 1 }
 
     example 'Creating property by current_user' do
       expect { do_request }.to change { Property.count }.by(1)
@@ -78,6 +80,7 @@ RSpec.resource 'Properties' do
       expect(property.description).to eq(description)
       expect(property.rooms_count).to eq(rooms_count)
       expect(property.guests_capacity).to eq(guests_capacity)
+      expect(property.minimum_days).to eq(minimum_days)
       expect(status).to eq 200
     end
   end
@@ -91,6 +94,7 @@ RSpec.resource 'Properties' do
       parameter :description, 'Description property'
       parameter :rooms_count, 'Property rooms count'
       parameter :guests_capacity, 'Guests capacity property'
+      parameter :minimum_days, 'Minimum days for book property'
     end
 
     let(:name) { 'another property' }
@@ -100,6 +104,7 @@ RSpec.resource 'Properties' do
     let(:description) { 'Great property' }
     let(:rooms_count) { 4 }
     let(:guests_capacity) { 5 }
+    let(:minimum_days) { 1 }
 
     example_request 'Updating property by provider' do
       expect(property.reload.id).to eq(id)
@@ -110,6 +115,7 @@ RSpec.resource 'Properties' do
       expect(property.description).to eq(description)
       expect(property.rooms_count).to eq(rooms_count)
       expect(property.guests_capacity).to eq(guests_capacity)
+      expect(property.minimum_days).to eq(minimum_days)
       expect(status).to eq 200
     end
   end

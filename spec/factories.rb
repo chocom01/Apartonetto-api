@@ -18,6 +18,7 @@ FactoryBot.define do
     price { 400 }
     rooms_count { 4 }
     guests_capacity { 9 }
+    minimum_days { 1 }
     association :provider, factory: :user, role: 'provider'
   end
 
