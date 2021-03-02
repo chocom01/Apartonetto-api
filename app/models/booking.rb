@@ -34,6 +34,10 @@ class Booking < ApplicationRecord
 
   private
 
+  def nights_number
+    (end_rent_at - start_rent_at).to_i
+  end
+
   def period_is_free
     return unless Booking.by_property(property).weighted
                          .reserved_in(start_rent_at, end_rent_at).exists?
