@@ -29,7 +29,7 @@ class Booking < ApplicationRecord
   }
 
   def property_price_for_all_period
-    property.price * (end_rent_at - start_rent_at).to_i
+    property.price * nights_number
   end
 
   private
