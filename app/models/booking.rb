@@ -15,7 +15,7 @@ class Booking < ApplicationRecord
   has_one :chat, dependent: :destroy
 
   validate :period_is_free,
-           :end_date_is_after_start_date,
+           :acceptable_minimum_days,
            on: :create,
            if: -> { start_rent_at && end_rent_at }
   validate :allowable_number_of_guests, on: :create
@@ -45,10 +45,10 @@ class Booking < ApplicationRecord
     errors.add(:booking, 'date already taken')
   end
 
-  def end_date_is_after_start_date
-    return if end_rent_at > start_rent_at
+  def acceptable_minimum_days
+    return if nights_number >= property.minimum_days
 
-    errors.add(:end_rent_at, 'cannot be before the start date')
+    errors.add(:end_rent_at, "Minimum #{property.minimum_days} days")
   end
 
   def allowable_number_of_guests
