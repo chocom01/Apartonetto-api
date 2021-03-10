@@ -83,13 +83,19 @@ GEM
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.4, >= 0.4.4)
       dry-equalizer
+    e2mmap (0.1.0)
     erubi (1.10.0)
+    et-orbi (1.2.4)
+      tzinfo
     factory_bot (6.1.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.1.0)
       factory_bot (~> 6.1.0)
       railties (>= 5.0.0)
     ffi (1.14.2)
+    fugit (1.4.2)
+      et-orbi (~> 1.1, >= 1.1.8)
+      raabro (~> 1.4)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     has_scope (0.8.0)
@@ -143,6 +149,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.1.0)
       activesupport (>= 3.0.0)
+    raabro (1.4.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -211,6 +218,8 @@ GEM
       rspec (~> 3.0)
     ruby-graphviz (1.2.5)
       rexml
+    rufus-scheduler (3.7.0)
+      fugit (~> 1.1, >= 1.1.6)
     shrine (3.3.0)
       content_disposition (~> 1.0)
       down (~> 5.1)
@@ -218,6 +227,13 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
+    sidekiq-scheduler (3.0.1)
+      e2mmap
+      redis (>= 3, < 5)
+      rufus-scheduler (~> 3.2)
+      sidekiq (>= 3)
+      thwait
+      tilt (>= 1.4.0)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -231,6 +247,9 @@ GEM
       sprockets (>= 3.0.0)
     thor (1.1.0)
     thread_safe (0.3.6)
+    thwait (0.2.0)
+      e2mmap
+    tilt (2.0.10)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
     websocket-driver (0.7.3)
@@ -258,10 +277,12 @@ DEPENDENCIES
   pundit
   rails (~> 6.0.3, >= 6.0.3.4)
   rails-erd
+  redis
   rspec-rails (~> 4.0.2)
   rspec_api_documentation
   shrine (~> 3.0)
   sidekiq
+  sidekiq-scheduler
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data

@@ -5,6 +5,7 @@ ruby '2.7.1'
 
 gem 'blueprinter'
 gem 'has_scope'
+gem 'redis'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use postgresql as the database for Active Record
@@ -20,6 +21,7 @@ gem 'pundit'
 gem 'rspec_api_documentation'
 gem 'shrine', '~> 3.0'
 gem 'sidekiq'
+gem 'sidekiq-scheduler'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
