@@ -2,9 +2,10 @@
 
 class Payment < ApplicationRecord
   enum status: {
-    waiting_for_payment: 0,
-    paid: 1,
-    rejected: 2
+    draft: 0,
+    waiting_for_payment: 1,
+    paid: 2,
+    rejected: 3
   }
 
   belongs_to :booking
