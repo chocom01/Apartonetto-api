@@ -48,9 +48,9 @@
 )
 @booking = Booking.create(
   [
-    { tenant_id: 3, property_id: 3, number_of_guests: 2,
+    { tenant_id: 3, property_id: 3, number_of_guests: 2, amount_for_period: 10_500,
       start_rent_at: '2021.01.01', end_rent_at: '2021.02.05' },
-    { tenant_id: 3, property_id: 3, number_of_guests: 3,
+    { tenant_id: 3, property_id: 3, number_of_guests: 3, amount_for_period: 9300,
       start_rent_at: '2021.05.01', end_rent_at: '2021.06.01' }
   ]
 )
