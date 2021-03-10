@@ -13,6 +13,7 @@ class ActivatePaymentsWorker
     )
     payments_for_next_month.map do |payment|
       payment.waiting_for_payment!
+      CheckIfPaidWorker.perform_in(9.days, payment.id)
     end
   end
 end
