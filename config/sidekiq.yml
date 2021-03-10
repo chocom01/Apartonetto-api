@@ -1,0 +1,4 @@
+:schedule:
+  activate_payments:
+    cron: '* * -10 * *'
+    class: ActivatePaymentsWorker
