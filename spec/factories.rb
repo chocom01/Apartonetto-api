@@ -15,7 +15,7 @@ FactoryBot.define do
     location { 'Lviv' }
     description { 'Big apartament' }
     address { 'Lincoln 1' }
-    price { 400 }
+    price { 100 }
     rooms_count { 4 }
     guests_capacity { 9 }
     minimum_days { 1 }
@@ -28,7 +28,7 @@ FactoryBot.define do
     start_rent_at { '2000.01.01' }
     end_rent_at { '2000.01.02' }
     number_of_guests { 5 }
-    amount_for_period { 400 }
+    amount_for_period { 100 }
   end
 
   factory :payment do
@@ -37,7 +37,7 @@ FactoryBot.define do
     recipient { booking.property.provider }
     service { 'Paypal' }
     info { 'payment for big apartament' }
-    amount { 400 }
+    amount { 100 }
   end
 
   factory :chat do

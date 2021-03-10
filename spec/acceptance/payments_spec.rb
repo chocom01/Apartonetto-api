@@ -10,7 +10,7 @@ RSpec.resource 'Payments' do
     { sub: payment.payer.id }).token}"
   end
 
-  let!(:payment) { create(:payment) }
+  let!(:payment) { create(:payment, status: 'waiting_for_payment') }
   let(:id) { payment.id }
 
   get '/payments' do
