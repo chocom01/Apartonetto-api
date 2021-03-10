@@ -16,7 +16,7 @@ class BookingPolicy < ApplicationPolicy
   end
 
   def create?
-    user.tenant?
+    user.tenant? && !user.sent_payments.where(status: 'overdue').exists?
   end
 
   def cancel?
