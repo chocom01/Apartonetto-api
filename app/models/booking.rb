@@ -11,7 +11,7 @@ class Booking < ApplicationRecord
 
   belongs_to :tenant, class_name: 'User'
   belongs_to :property
-  has_one :payment, dependent: :destroy
+  has_many :payments, dependent: :destroy
   has_one :chat, dependent: :destroy
 
   validate :period_is_free,
