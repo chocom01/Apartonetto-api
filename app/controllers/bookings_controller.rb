@@ -2,7 +2,7 @@
 
 class BookingsController < ApplicationController
   before_action :authenticate_user
-  before_action :load_booking, only: %i[show cancel confirm decline]
+  before_action :find_booking, only: %i[show cancel confirm decline]
 
   def index
     bookings = policy_scope(Booking)
@@ -47,7 +47,7 @@ class BookingsController < ApplicationController
     )
   end
 
-  def load_booking
+  def find_booking
     authorize @booking = Booking.find(params[:id])
   end
 end

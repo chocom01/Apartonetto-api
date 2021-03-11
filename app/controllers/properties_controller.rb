@@ -4,14 +4,8 @@ class PropertiesController < ApplicationController
   before_action :authenticate_user, only: %i[create update destroy]
   before_action :find_property, only: %i[show update destroy]
 
-  # has_scope :price_period
-  has_scope :min_price
-  has_scope :max_price
-  has_scope :min_capacity
-  has_scope :max_capacity
-  has_scope :min_rooms
-  has_scope :max_rooms
-  has_scope :by_address
+  has_scope :min_price, :max_price, :min_capacity, :max_capacity, :by_address,
+            :min_rooms, :max_rooms
 
   def index
     properties = apply_scopes(Property).all

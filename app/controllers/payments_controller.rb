@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PaymentsController < ApplicationController
-  before_action :load_payment, only: %i[show pay reject]
+  before_action :find_payment, only: %i[show pay reject]
   before_action :authenticate_user
 
   def index
@@ -25,7 +25,7 @@ class PaymentsController < ApplicationController
 
   private
 
-  def load_payment
+  def find_payment
     authorize @payment = Payment.find(params[:id])
   end
 end

@@ -6,8 +6,8 @@ class ChatsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    chat = policy_scope(Chat)
-    render json: chat
+    chats = policy_scope(Chat)
+    render json: chats
   end
 
   def show
