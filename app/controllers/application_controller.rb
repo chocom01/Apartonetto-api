@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
   private
 
   def render_errors(errors, status = :unprocessable_entity)
-    render json: { errors: errors }, status: status
+    render json: { errors: errors.join(', ') }, status: status
   end
 
   rescue_from Pundit::NotAuthorizedError do |e|

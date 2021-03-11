@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
     @chat = policy_scope(Chat).find(params[:id])
     @message = Message.new(user: current_user, chat: @chat, **message_params)
 
-    return render_errors(@message.errors) unless @message.save
+    return render_errors(@message.errors.full_messages) unless @message.save
 
     render json: @message
   end

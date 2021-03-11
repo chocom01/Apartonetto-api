@@ -24,14 +24,14 @@ class PropertiesController < ApplicationController
 
   def create
     authorize property = Property.new(provider: current_user, **property_params)
-    return render_errors(property.errors) unless property.save
+    return render_errors(property.errors.full_messages) unless property.save
 
     render json: property
   end
 
   def update
     unless @property.update(property_params)
-      return render_errors(@property.errors)
+      return render_errors(@property.errors.full_messages)
     end
 
     render json: @property
