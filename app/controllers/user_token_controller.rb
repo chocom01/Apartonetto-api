@@ -4,7 +4,7 @@ class UserTokenController < Knock::AuthTokenController
   skip_before_action :verify_authenticity_token
   before_action :authenticate
 
-  def sign_in
+  def create
     render json: token_json_hash(entity)
   end
 

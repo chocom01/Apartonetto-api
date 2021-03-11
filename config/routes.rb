@@ -4,7 +4,7 @@ require 'sidekiq-scheduler/web'
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
-  post '/sign_in', to: 'user_token#sign_in'
+  post '/sign_in', to: 'user_token#create'
   post '/create', to: 'users#create'
   patch '/update', to: 'users#update'
 
