@@ -5,19 +5,15 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(user_params_for_create)
-    user.errors.add(:role, "can't create admin")
-    if user.role == 'admin'
-      render json: { errors: user.errors }, status: :unprocessable_entity
-    elsif user.save
-      render json: token_json_hash(user)
-    else
-      render json: { errors: user.errors }, status: :unprocessable_entity
-    end
+    return render_errors(user.errors.full_messages) unless user.save
+
+    render json: token_json_hash(user)
   end
 
   def update
-    return render_errors(current_user.errors) unless
-      current_user.update(user_params_for_update)
+    unless current_user.update(user_params_for_update)
+      render_errors(current_user.errors.full_messages)
+    end
 
     render json: current_user
   end

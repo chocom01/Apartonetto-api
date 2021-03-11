@@ -5,8 +5,7 @@ class User < ApplicationRecord
 
   enum role: {
     tenant: 0,
-    provider: 1,
-    admin: 2
+    provider: 1
   }
 
   has_secure_password
@@ -22,18 +21,11 @@ class User < ApplicationRecord
   has_many :reviews, as: :reviewable
   has_many :provider_bookings, through: :properties, source: :bookings
 
-  validates :first_name, :last_name, length: { in: 3..11 }, if: :skip_for_admin
+  validates :first_name, :last_name, length: { in: 3..11 }
   validates :password, length: { in: 5..15 }
   validates :phone, numericality: true, length: { in: 10..12 },
-                    uniqueness: true,
-                    if: :skip_for_admin
+                    uniqueness: true
   validates :email,
             uniqueness: true,
             format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
-
-  private
-
-  def skip_for_admin
-    tenant? || provider?
-  end
 end

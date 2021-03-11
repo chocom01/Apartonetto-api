@@ -8,7 +8,8 @@
 
 @users = User.create(
   [
-    { email: 'admin@gmail.com', password: 'admin', role: 2 },
+    { first_name: 'test', last_name: 'test', phone: '000000000000',
+      email: 'test@gmail.com', password: 'admin', role: 0 },
     { first_name: 'Kolya', last_name: 'Vasyliv', phone: '380631775050',
       email: 'qweasd1@gmail.com', password: 'provider', role: 1 },
     { first_name: 'Igor', last_name: 'Kuzmin', phone: '380631775051',
