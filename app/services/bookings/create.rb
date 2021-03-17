@@ -8,7 +8,6 @@ module Bookings
 
     def call(booking_params, current_user_id)
       @booking = Booking.new(tenant_id: current_user_id, **booking_params)
-      @booking.amount_for_period = @booking.property_price_for_all_period
       @payment = Payment.new(status: 'waiting_for_payment', **payment_params)
       chat = Chat.new(chat_params)
 
@@ -46,7 +45,7 @@ module Bookings
 
     def payment_creating
       if small_period? && (@end_booking - @start_booking).to_i < 62
-        @payment.amount = @booking.amount_for_period
+        @payment.amount = @booking.property_price_for_all_period
         @payment.from_date = @start_booking
         @payment.to_date = @end_booking
       else

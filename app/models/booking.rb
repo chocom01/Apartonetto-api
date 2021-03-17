@@ -27,9 +27,10 @@ class Booking < ApplicationRecord
     where(':initial_date < end_rent_at AND :finale_date > start_rent_at',
           { initial_date: start_rent_at, finale_date: end_rent_at })
   }
+  before_create :property_price_for_all_period
 
   def property_price_for_all_period
-    property.price * nights_number
+    self.amount_for_period = property.price * nights_number
   end
 
   private
