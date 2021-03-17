@@ -23,5 +23,20 @@ class Property < ApplicationRecord
   scope :min_rooms, ->(number) { where('rooms_count >= ?', number) }
   scope :max_rooms, ->(number) { where('rooms_count <= ?', number) }
 
-  scope :by_address, ->(address) { where('lower(address) like ?', "#{address.downcase}%") }
+  scope :by_address, lambda { |address|
+    where('lower(address) like ?', "%#{address.downcase}%")
+  }
+
+  scope :vacant_properties_in_dates, lambda { |initial_date, finale_date|
+    booking_table = Booking.arel_table
+    property_table = Property.arel_table
+    Property.find_by_sql(
+      property_table.join(booking_table, Arel::Nodes::OuterJoin)
+                    .on(property_table[:id].eq(booking_table[:property_id])
+                    .and(booking_table[:end_rent_at].gt(initial_date))
+                    .and(booking_table[:start_rent_at].lt(finale_date)))
+                    .where(booking_table[:id].eq(nil))
+                    .order(property_table[:id].asc).project('properties.*')
+    )
+  }
 end
