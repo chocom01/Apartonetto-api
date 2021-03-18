@@ -161,4 +161,45 @@ RSpec.describe Property, type: :model do
       it { expect(subject).to eq([]) }
     end
   end
+
+  describe '.vacant_properties_in_dates' do
+    subject { described_class.vacant_properties_in_dates(start_date, end_date) }
+
+    let(:start_date) { '2021.03.01' }
+    let(:end_date) { '2021.04.01' }
+    let!(:input_property) { create(:property) }
+    let!(:free_property) { create(:property) }
+    let!(:busy_property) { create(:property) }
+    let!(:always_exists_booking) { create(:booking, property: busy_property, start_rent_at: '2021.01.02', end_rent_at: '2021.02.02') }
+
+    context 'input period < existing period' do
+      let!(:input_booking) { create(:booking, property: input_property, start_rent_at: '2021.01.02', end_rent_at: '2021.02.02') }
+      it { expect(subject).to eq([input_property, free_property, busy_property]) }
+    end
+
+    context 'input period > existing period' do
+      let!(:input_booking) { create(:booking, property: input_property, start_rent_at: '2021.05.02', end_rent_at: '2021.07.02') }
+      it { expect(subject).to eq([input_property, free_property, busy_property]) }
+    end
+
+    context 'imput end_date inside the existing period' do
+      let!(:input_booking) { create(:booking, property: input_property, start_rent_at: '2021.01.02', end_rent_at: '2021.03.02') }
+      it { expect(subject).to eq([free_property, busy_property]) }
+    end
+
+    context 'imput start_date inside the existing period' do
+      let!(:input_booking) { create(:booking, property: input_property, start_rent_at: '2021.03.02', end_rent_at: '2021.05.02') }
+      it { expect(subject).to eq([free_property, busy_property]) }
+    end
+
+    context 'input period inside the existing period ' do
+      let!(:input_booking) { create(:booking, property: input_property, start_rent_at: '2021.02.02', end_rent_at: '2021.05.02') }
+      it { expect(subject).to eq([free_property, busy_property]) }
+    end
+
+    context 'existing period inside the input period' do
+      let!(:input_booking) { create(:booking, property: input_property, start_rent_at: '2021.03.01', end_rent_at: '2021.03.21') }
+      it { expect(subject).to eq([free_property, busy_property]) }
+    end
+  end
 end
