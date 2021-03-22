@@ -24,27 +24,32 @@
   [
     { name: 'Apartament', description: 'Smart apartment',
       address: 'Lincoln 1', guests_capacity: 2, rooms_count: 1,
-      price: 500, provider_id: 2, location: 'Lviv', minimum_days: 10 },
+      price: 500, provider_id: 2, minimum_days: 10,
+      longitude: 49.808544, latitude: 24.046864 },
 
     { name: 'Apartament', description: 'Luxury apartament',
       address: 'Lincoln 2', guests_capacity: 3, rooms_count: 2,
-      price: 400, provider_id: 2, location: 'Lviv', minimum_days: 10 },
+      price: 400, provider_id: 2, minimum_days: 10,
+      longitude: 49.808544, latitude: 24.046864 },
 
     { name: 'Apartament', description: 'Сomfortable apartment',
       address: 'Lincoln 3', guests_capacity: 4, rooms_count: 3,
-      price: 300, provider_id: 2, location: 'Lviv', minimum_days: 25 },
+      price: 300, provider_id: 2, minimum_days: 25 },
 
     { name: 'Apartament', description: 'Low cost apartament',
       address: 'Lincoln 4', guests_capacity: 5, rooms_count: 4,
-      price: 150, provider_id: 2, location: 'Lviv', minimum_days: 10 },
+      price: 150, provider_id: 2, minimum_days: 10,
+      longitude: 49.808544, latitude: 24.046864 },
 
     { name: 'Apartament', description: 'Small apartament',
       address: 'Lincoln 5', guests_capacity: 6, rooms_count: 5,
-      price: 200, provider_id: 2, location: 'Lviv', minimum_days: 10 },
+      price: 200, provider_id: 2, minimum_days: 10,
+      longitude: 49.808544, latitude: 24.046864 },
 
     { name: 'House', description: 'Big house',
       address: 'Lincoln 6', guests_capacity: 7, rooms_count: 6,
-      price: 1500, provider_id: 2, location: 'Lviv oblast', minimum_days: 10 }
+      price: 1500, provider_id: 2, minimum_days: 10,
+      longitude: 49.808544, latitude: 24.046864 }
   ]
 )
 @booking = Booking.create(
@@ -58,9 +63,9 @@
 @payment = Payment.create(
   [
     { payer_id: 3, recipient_id: 2, booking_id: 1, amount: 10_500,
-      service: 'Paypal', info: 'payment for apartament' },
+      service: 'Paypal', info: 'payment for apartament', from_date: '2021.01.01' },
     { payer_id: 3, recipient_id: 2, booking_id: 2, amount: 9300,
-      service: 'Paypal', info: 'payment for apartament' }
+      service: 'Paypal', info: 'payment for apartament', from_date: '2021.05.01' }
   ]
 )
 

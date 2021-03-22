@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_150520) do
+ActiveRecord::Schema.define(version: 2021_03_22_113410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,7 +80,6 @@ ActiveRecord::Schema.define(version: 2021_03_04_150520) do
   create_table "properties", force: :cascade do |t|
     t.bigint "provider_id"
     t.string "name"
-    t.string "location"
     t.text "description"
     t.integer "price"
     t.datetime "created_at", precision: 6, null: false
@@ -89,6 +88,8 @@ ActiveRecord::Schema.define(version: 2021_03_04_150520) do
     t.string "address"
     t.integer "rooms_count"
     t.integer "minimum_days"
+    t.float "longitude"
+    t.float "latitude"
     t.index ["provider_id"], name: "index_properties_on_provider_id"
   end
 
