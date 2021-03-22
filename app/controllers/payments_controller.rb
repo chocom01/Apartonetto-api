@@ -14,7 +14,11 @@ class PaymentsController < ApplicationController
   end
 
   def pay
-    @payment.paid!
+    if @payment.from_date == @payment.booking.start_rent_at
+      @payment.money_reservation! && @payment.booking.waiting_for_confirm!
+    else
+      @payment.paid!
+    end
     render json: @payment
   end
 
