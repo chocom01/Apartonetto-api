@@ -3,10 +3,11 @@
 class Booking < ApplicationRecord
   paginates_per 10
   enum status: {
-    waiting_for_confirm: 0,
-    confirmed: 1,
-    declined: 2,
-    canceled: 3
+    payment_waiting: 0,
+    waiting_for_confirm: 1,
+    confirmed: 2,
+    declined: 3,
+    canceled: 4
   }
 
   belongs_to :tenant, class_name: 'User'
@@ -21,7 +22,9 @@ class Booking < ApplicationRecord
   validate :allowable_number_of_guests, on: :create
   validates :number_of_guests, numericality: { other_than: 0 }
 
-  scope :weighted, -> { where(status: %i[confirmed waiting_for_confirm]) }
+  scope :weighted, -> {
+    where(status: %i[confirmed waiting_for_confirm payment_waiting])
+  }
   scope :by_property, ->(property_id) { where(property_id: property_id) }
   scope :reserved_in, lambda { |start_rent_at, end_rent_at|
     where(':initial_date < end_rent_at AND :finale_date > start_rent_at',

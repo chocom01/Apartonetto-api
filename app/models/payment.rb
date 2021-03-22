@@ -6,7 +6,8 @@ class Payment < ApplicationRecord
     waiting_for_payment: 1,
     paid: 2,
     rejected: 3,
-    overdue: 4
+    overdue: 4,
+    money_reservation: 5
   }
 
   belongs_to :booking
