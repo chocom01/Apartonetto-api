@@ -27,7 +27,7 @@ class BookingsController < ApplicationController
   end
 
   def confirm
-    @booking.confirmed!
+    @booking.confirmed! && @booking.payments.last.paid!
     render json: @booking
   end
 
