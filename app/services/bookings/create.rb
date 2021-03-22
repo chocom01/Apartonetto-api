@@ -23,7 +23,12 @@ module Bookings
         end
         Success([@booking, @payment, chat])
       rescue ActiveRecord::RecordInvalid
-        Failure([@booking.errors, @payment.errors, chat.errors])
+        Failure(
+          [
+            @booking.errors.full_messages, @payment.errors.full_messages,
+            chat.errors.full_messages
+          ]
+        )
       end
     end
 
