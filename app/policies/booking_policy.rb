@@ -6,13 +6,14 @@ class BookingPolicy < ApplicationPolicy
       if user.tenant?
         user.bookings
       elsif user.provider?
-        user.provider_bookings
+        user.provider_bookings.where.not(status: 'payment_waiting')
       end
     end
   end
 
   def show?
-    record.tenant == user || record.property.provider == user
+    record.tenant == user || (record.property.provider == user &&
+      !record.payment_waiting?)
   end
 
   def create?
@@ -20,12 +21,12 @@ class BookingPolicy < ApplicationPolicy
   end
 
   def cancel?
-    record.tenant == user && record.waiting_for_confirm?
+    record.tenant == user && (record.payment_waiting? ||
+      record.waiting_for_confirm?)
   end
 
   def confirm?
-    record.property.provider == user && record.waiting_for_confirm? &&
-      !record.payments.where(status: 'waiting_for_payment').exists?
+    record.property.provider == user && record.waiting_for_confirm?
   end
 
   def decline?
