@@ -12,7 +12,6 @@ FactoryBot.define do
 
   factory :property do
     name { 'Apartament' }
-    location { 'Lviv' }
     description { 'Big apartament' }
     address { 'Lincoln 1' }
     price { 100 }

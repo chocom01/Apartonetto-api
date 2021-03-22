@@ -8,7 +8,8 @@ RSpec.describe Booking, type: :model do
     let!(:booking_new) do
       create(
         :booking, property: property, number_of_guests: 5,
-                  start_rent_at: '2020.04.01', end_rent_at: '2020.05.01'
+                  start_rent_at: '2020.04.01', end_rent_at: '2020.05.01',
+                  status: 'waiting_for_confirm'
       )
     end
     let(:booking) do

@@ -23,7 +23,6 @@ RSpec.resource 'Payments' do
       expect(payments_hash[0][:service]).to eq(payment.service)
       expect(payments_hash[0][:info]).to eq(payment.info)
       expect(payments_hash[0][:amount]).to eq(payment.amount)
-      expect(payments_hash[0][:amount]).to eq(payment.booking.amount_for_period)
       expect(status).to eq 200
     end
   end
@@ -38,7 +37,6 @@ RSpec.resource 'Payments' do
       expect(payment_hash[:service]).to eq(payment.service)
       expect(payment_hash[:info]).to eq(payment.info)
       expect(payment_hash[:amount]).to eq(payment.amount)
-      expect(payment_hash[:amount]).to eq(payment.booking.amount_for_period)
       expect(status).to eq 200
     end
   end

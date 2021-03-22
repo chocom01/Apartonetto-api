@@ -13,6 +13,9 @@ RSpec.resource 'Bookings' do
   let(:id) { booking.id }
 
   get '/bookings' do
+    let!(:booking1) { create(:booking, tenant: booking.tenant) }
+    let!(:payment) { create(:payment, booking: booking1, status: 'paid') }
+
     example_request 'Getting all bookings of current user' do
       bookings_hash = JSON.parse(response_body, symbolize_names: true)
       expect(bookings_hash[0][:id]).to eq(booking.id)
@@ -69,14 +72,14 @@ RSpec.resource 'Bookings' do
       expect(booking.id).to eq(booking.chat.booking_id)
       expect(booking.tenant).to eq(booking.chat.tenant)
       expect(booking.property.provider).to eq(booking.chat.provider)
-      # expect(booking.id).to eq(booking.payment.booking_id)
-      # expect(booking.tenant).to eq(booking.payment.payer)
-      # expect(booking.property.provider).to eq(booking.payment.recipient)
+      expect(booking.id).to eq(booking.payments.last.booking_id)
+      expect(booking.tenant).to eq(booking.payments.last.payer)
+      expect(booking.property.provider).to eq(booking.payments.last.recipient)
       expect(booking.tenant.id).to eq(tenant.id)
       expect(booking.property_id).to eq(property_id)
       expect(booking.start_rent_at).to eq(start_rent_at.to_date)
       expect(booking.end_rent_at).to eq(end_rent_at.to_date)
-      # expect(booking.amount_for_period).to eq(booking.payment.amount)
+      expect(booking.amount_for_period).to eq(booking.payments.sum(:amount))
       expect(booking.number_of_guests).to eq(number_of_guests)
       expect(status).to eq 200
     end
@@ -89,7 +92,7 @@ RSpec.resource 'Bookings' do
     end
 
     example 'Updating status booking to canceled, by current user' do
-      expect(booking.reload.status).to eq('waiting_for_confirm')
+      expect(booking.reload.status).to eq('payment_waiting')
       do_request
       expect(booking.reload.id).to eq(id)
       expect(booking.status).to eq('canceled')
@@ -98,8 +101,8 @@ RSpec.resource 'Bookings' do
   end
 
   patch '/bookings/:id/confirm' do
-    let!(:booking) { create(:booking) }
-    let!(:payment) { create(:payment, status: 'paid', booking: booking) }
+    let!(:booking) { create(:booking, status: 'waiting_for_confirm') }
+    let!(:payment) { create(:payment, status: 'money_reservation', booking: booking) }
     let(:id) { booking.id }
 
     let!(:auth_token) do
@@ -117,6 +120,7 @@ RSpec.resource 'Bookings' do
   end
 
   patch '/bookings/:id/decline' do
+    let!(:booking) { create(:booking, status: 'waiting_for_confirm') }
     let!(:auth_token) do
       "Bearer #{Knock::AuthToken.new(payload:
       { sub: booking.property.provider.id }).token}"

@@ -16,14 +16,13 @@ RSpec.resource 'Properties' do
   get '/properties' do
     example_request 'Getting all properties of current_user' do
       properties_hash = JSON.parse(response_body, symbolize_names: true)
-      expect(properties_hash[0][:id]).to eq(property.id)
-      expect(properties_hash[0][:name]).to eq(property.name)
-      expect(properties_hash[0][:price]).to eq(property.price)
-      expect(properties_hash[0][:address]).to eq(property.address)
-      expect(properties_hash[0][:location]).to eq(property.location)
-      expect(properties_hash[0][:description]).to eq(property.description)
-      expect(properties_hash[0][:rooms_count]).to eq(property.rooms_count)
-      expect(properties_hash[0][:guests_capacity])
+      expect(properties_hash[1][0][:id]).to eq(property.id)
+      expect(properties_hash[1][0][:name]).to eq(property.name)
+      expect(properties_hash[1][0][:price]).to eq(property.price)
+      expect(properties_hash[1][0][:address]).to eq(property.address)
+      expect(properties_hash[1][0][:description]).to eq(property.description)
+      expect(properties_hash[1][0][:rooms_count]).to eq(property.rooms_count)
+      expect(properties_hash[1][0][:guests_capacity])
         .to eq(property.guests_capacity)
       expect(status).to eq 200
     end
@@ -36,7 +35,6 @@ RSpec.resource 'Properties' do
       expect(property_hash[:name]).to eq(property.name)
       expect(property_hash[:price]).to eq(property.price)
       expect(property_hash[:address]).to eq(property.address)
-      expect(property_hash[:location]).to eq(property.location)
       expect(property_hash[:description]).to eq(property.description)
       expect(property_hash[:rooms_count]).to eq(property.rooms_count)
       expect(property_hash[:guests_capacity]).to eq(property.guests_capacity)
@@ -47,7 +45,6 @@ RSpec.resource 'Properties' do
   post '/properties' do
     with_options scope: :property do
       parameter :name, 'Property name'
-      parameter :location, 'Property location'
       parameter :price, 'Property price'
       parameter :address, 'Property address'
       parameter :description, 'Description property'
@@ -62,7 +59,6 @@ RSpec.resource 'Properties' do
     end
 
     let(:name) { 'Property' }
-    let(:location) { 'Kyiv' }
     let(:price) { 1110 }
     let(:address) { 'Syhivska 8' }
     let(:description) { 'Cool property' }
@@ -74,7 +70,6 @@ RSpec.resource 'Properties' do
       expect { do_request }.to change { Property.count }.by(1)
       property = Property.last
       expect(property.name).to eq(name)
-      expect(property.location).to eq(location)
       expect(property.price).to eq(price)
       expect(property.address).to eq(address)
       expect(property.description).to eq(description)
@@ -88,7 +83,6 @@ RSpec.resource 'Properties' do
   patch 'properties/:id' do
     with_options scope: :property do
       parameter :name, 'Property name'
-      parameter :location, 'Property location'
       parameter :price, 'Property price'
       parameter :address, 'Property address'
       parameter :description, 'Description property'
@@ -98,7 +92,6 @@ RSpec.resource 'Properties' do
     end
 
     let(:name) { 'another property' }
-    let(:location) { 'Kambozha' }
     let(:price) { 121 }
     let(:address) { 'Syhivska 4' }
     let(:description) { 'Great property' }
@@ -109,7 +102,6 @@ RSpec.resource 'Properties' do
     example_request 'Updating property by provider' do
       expect(property.reload.id).to eq(id)
       expect(property.name).to eq(name)
-      expect(property.location).to eq(location)
       expect(property.price).to eq(price)
       expect(property.address).to eq(address)
       expect(property.description).to eq(description)
