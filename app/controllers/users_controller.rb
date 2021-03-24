@@ -7,15 +7,16 @@ class UsersController < ApplicationController
     user = User.new(user_params_for_create)
     return render_errors(user.errors.full_messages) unless user.save
 
-    render json: token_json_hash(user)
+    token_json_hash(user)
+    render json: UserBlueprint.render(user, view: :for_current_user)
   end
 
   def update
     unless current_user.update(user_params_for_update)
-      render_errors(current_user.errors.full_messages)
+      return render_errors(current_user.errors.full_messages)
     end
 
-    render json: current_user
+    render json: UserBlueprint.render(current_user, view: :for_current_user)
   end
 
   private
