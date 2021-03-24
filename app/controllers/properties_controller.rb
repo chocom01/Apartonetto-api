@@ -12,11 +12,11 @@ class PropertiesController < ApplicationController
   def index
     properties = apply_scopes(Property.all)
     results = Kaminari.paginate_array(properties).page(params[:page]).per(10)
-    render json: [results.total_count, results]
+    render json: PropertyBlueprint.render(results, view: :normal)
   end
 
   def show
-    render json: @property
+    render json: PropertyBlueprint.render(@property, view: :normal)
   end
 
   def create
@@ -24,25 +24,21 @@ class PropertiesController < ApplicationController
     return render_errors(property.errors.full_messages) unless property.save
 
     property.photos.create(photo_params_create) if params[:photo]
-    render json: property
+    render json: PropertyBlueprint.render(property, view: :normal)
   end
 
   def update
-    result_array = []
     update_property = @property.update(property_params) if params[:property]
     unless update_property || update_property.nil?
       return render_errors(@property.errors.full_messages)
     end
 
-    result_array += [@property]
     if params[:photo]
-      new_photo = @property.photos.create(photo_params_create)
-      result_array += [new_photo] unless new_photo.nil?
+      @property.photos.create(photo_params_create)
     elsif params[:photo_delete]
-      delete_photo = Photo.delete(photo_params_delete[:id])
-      result_array += [delete_photo]
+      Photo.delete(photo_params_delete[:id])
     end
-    render json: result_array
+    render json: PropertyBlueprint.render(@property, view: :normal)
   end
 
   def destroy
