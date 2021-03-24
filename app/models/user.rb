@@ -22,7 +22,7 @@ class User < ApplicationRecord
   has_many :provider_bookings, through: :properties, source: :bookings
 
   validates :first_name, :last_name, length: { in: 3..11 }
-  validates :password, length: { in: 5..15 }
+  validates :password, length: { minimum: 6 }, if: -> { password.present? }
   validates :phone, numericality: true, length: { in: 10..12 },
                     uniqueness: true
   validates :email,
