@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
 
     return render_errors(@message.errors.full_messages) unless @message.save
 
-    render json: @message
+    render json: MessageBlueprint.render(@chat.messages)
   end
 
   private
