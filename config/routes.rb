@@ -23,7 +23,4 @@ Rails.application.routes.draw do
   get '/chats/:id/messages', to: 'chats#messages'
 
   post '/chats/:id/messages', to: 'messages#create'
-
-  get '/photos', to: 'photos#index'
-  post '/photos', to: 'photos#create'
 end
