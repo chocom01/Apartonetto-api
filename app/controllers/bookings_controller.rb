@@ -5,12 +5,12 @@ class BookingsController < ApplicationController
   before_action :find_booking, only: %i[show cancel confirm decline]
 
   def index
-    bookings = policy_scope(Booking)
-    render json: bookings.page(params[:page])
+    bookings = policy_scope(Booking).page(params[:page])
+    render json: BookingBlueprint.render(bookings, view: :normal)
   end
 
   def show
-    render json: @booking
+    render json: BookingBlueprint.render(@booking, view: :normal)
   end
 
   def create
@@ -23,17 +23,17 @@ class BookingsController < ApplicationController
 
   def cancel
     @booking.canceled!
-    render json: @booking
+    render json: BookingBlueprint.render(@booking, view: :normal)
   end
 
   def confirm
     @booking.confirmed! && @booking.payments.last.paid!
-    render json: @booking
+    render json: BookingBlueprint.render(@booking, view: :normal)
   end
 
   def decline
     @booking.declined!
-    render json: @booking
+    render json: BookingBlueprint.render(@booking, view: :normal)
   end
 
   private

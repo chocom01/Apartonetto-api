@@ -21,7 +21,7 @@ module Bookings
           @booking.save! && @payment.save! && chat.save!
           CheckIfAcceptedWorker.perform_in(8.hours, @booking.id)
         end
-        Success([@booking, @payment, chat])
+        Success(BookingBlueprint.render(@booking, view: :normal))
       rescue ActiveRecord::RecordInvalid
         Failure(
           [
