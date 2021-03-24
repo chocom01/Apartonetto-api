@@ -6,11 +6,11 @@ class PaymentsController < ApplicationController
 
   def index
     payments = policy_scope(Payment)
-    render json: payments
+    render json: PaymentBlueprint.render(payments)
   end
 
   def show
-    render json: @payment
+    render json: PaymentBlueprint.render(@payment)
   end
 
   def pay
@@ -19,12 +19,12 @@ class PaymentsController < ApplicationController
     else
       @payment.paid!
     end
-    render json: @payment
+    render json: PaymentBlueprint.render(@payment)
   end
 
   def reject
     @payment.rejected!
-    render json: @payment
+    render json: PaymentBlueprint.render(@payment)
   end
 
   private
