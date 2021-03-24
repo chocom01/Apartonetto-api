@@ -14,4 +14,8 @@ class ApplicationController < ActionController::API
   rescue_from Pundit::NotAuthorizedError do |e|
     render_errors(e, :forbidden)
   end
+
+  Blueprinter.configure do |config|
+    config.sort_fields_by = :definition
+  end
 end
