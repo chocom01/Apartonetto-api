@@ -7,15 +7,16 @@ class ChatsController < ApplicationController
 
   def index
     chats = policy_scope(Chat)
-    render json: chats
+    render json: ChatBlueprint.render(chats, view: :normal)
   end
 
   def show
-    render json: @chat
+    render json: ChatBlueprint.render(@chat, view: :normal)
   end
 
   def messages
-    render json: @chat.messages
+    result = @chat.messages.page(params[:page]).per(10)
+    render json: MessageBlueprint.render(result)
   end
 
   private
