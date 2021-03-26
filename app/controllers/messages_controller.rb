@@ -4,12 +4,12 @@ class MessagesController < ApplicationController
   before_action :authenticate_user
 
   def create
-    @chat = policy_scope(Chat).find(params[:id])
-    @message = Message.new(user: current_user, chat: @chat, **message_params)
+    chat = policy_scope(Chat).find(params[:id])
+    message = Message.new(user: current_user, chat: chat, **message_params)
 
-    return render_errors(@message.errors.full_messages) unless @message.save
+    return render_errors(message.errors.full_messages) unless message.save
 
-    render json: MessageBlueprint.render(@chat.messages)
+    render json: MessageBlueprint.render(chat.messages)
   end
 
   private
